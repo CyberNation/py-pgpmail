@@ -3,7 +3,7 @@
 ######How to Use
 
 
-1. Import PGP Keys (gpg --keyserver keyserver.cybernation.eu --recv KEY_ID )
+1. Import PGP Keys (gpg --import webmaster-key.asc )
 2. Send PGP Mail via Python
 ```python
 if __name__ == "__main__":

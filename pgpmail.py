@@ -46,12 +46,15 @@ def send_smtp_pgp_mail(server_address, username, password, recp, subject, msg, s
         sender = username
 
     gpg = gnupg.GPG()
-    gpg_msg = ""
+    gpg_obj = ""
 
     if "<" in recp:
-        gpg_msg = str(gpg.encrypt(msg, re.findall("<\S{1,}>", recp)[0][1:-1]))
+        gpg_obj = gpg.encrypt(msg, re.findall("<\S{1,}>", recp)[0][1:-1])
     else:
-        gpg_msg = str(gpg.encrypt(msg, recp))
+        gpg_obj = gpg.encrypt(msg, recp)
+
+    if not gpg_obj.status == 'encryption ok':
+        raise Exception("Sent PGP Error: " + gpg_obj.status)
 
     if server_port == 465:
         # Initialize SSL Connection
@@ -62,7 +65,7 @@ def send_smtp_pgp_mail(server_address, username, password, recp, subject, msg, s
 
     smtp_server.login(username, password)
 
-    msg = MIMEMultipartPGP(gpg_msg)
+    msg = MIMEMultipartPGP(gpg_obj.data)
 
     msg['Subject'] = subject
     msg["From"] = sender
