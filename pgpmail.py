@@ -38,7 +38,7 @@ class MIMEMultipartPGP(MIMEMultipart):
                                _subparts=_subparts, **_params)
 
 
-def send_smtp_pgp_mail(server_address, username, password, recp, msg, sender=None, server_port=25):
+def send_smtp_pgp_mail(server_address, username, password, recp, subject, msg, sender=None, server_port=25):
     ssl = None
     smtp_server = None
 
@@ -64,7 +64,7 @@ def send_smtp_pgp_mail(server_address, username, password, recp, msg, sender=Non
 
     msg = MIMEMultipartPGP(gpg_msg)
 
-    msg['Subject'] = "Python PGP Test"
+    msg['Subject'] = subject
     msg["From"] = sender
     msg["To"] = recp
     smtp_server.send_message(msg)
