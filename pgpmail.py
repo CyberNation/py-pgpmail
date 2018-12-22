@@ -49,7 +49,7 @@ def send_smtp_pgp_mail(server_address, username, password, recp, subject, msg, s
     gpg_msg = ""
 
     if "<" in recp:
-        gpg_msg = str(gpg.encrypt(msg, re.findall("<\S{1,}>", recp)[0]))
+        gpg_msg = str(gpg.encrypt(msg, re.findall("<\S{1,}>", recp)[0][1:-1]))
     else:
         gpg_msg = str(gpg.encrypt(msg, recp))
 
